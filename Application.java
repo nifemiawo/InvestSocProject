@@ -4,6 +4,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
@@ -18,11 +20,7 @@ public class Application {
         
             String apiKey = System.getenv("NEWSAPIKEY");
             
-            if (apiKey != null) {
-                System.out.println("hi");
-            } else {
-                System.out.println("bye");
-            }
+            
             System.out.println(getNews(apiKey));
             
         }
@@ -75,4 +73,14 @@ public class Application {
         return newsContent.toString();
     }
 
+
+    /**
+     * Method responsible for mailing news
+     * @param mailingList - the mailing list (stored as an arraylist (munsif you can choose a different ds to store this if you wish ))
+     * @param password - the password for the email
+     * @param newsContent - the news content to email
+     */
+    private static void sendEmail(ArrayList<String> mailingList, String password, String newsContent){
+        
+    }
 }
