@@ -31,6 +31,7 @@ public class Application {
 
         ArrayList<String> mailingList = new ArrayList<>();
         mailingList.add("munsif.shameem@gmail.com");
+        mailingList.add("nifemiawotorebo@gmail.com");
 
         sendEmail(mailingList, senderEmail, senderPassword, newsContent);
     }
@@ -56,8 +57,8 @@ public class Application {
             jsonReader.close();
 
             JsonArray articles = jsonObject.getJsonArray("articles");
-            // get 10 articles related to business
-            for (int i = 0; i < 10; i++) {
+            // get 5 articles related to business
+            for (int i = 0; i < 4; i++) {
                 JsonObject article = articles.getJsonObject(i);
                 String title = article.getString("title");
                 String newsUrl = article.getString("url");
