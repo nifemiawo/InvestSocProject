@@ -4,6 +4,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Properties;
 
 import javax.json.Json;
@@ -21,19 +22,24 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
 
+import java.time.LocalDate;
 public class Application {
     public static void main(String[] args) {
         String apiKey = System.getenv("NEWSAPIKEY");
         String senderEmail = System.getenv("EMAIL");
         String senderPassword = System.getenv("EMAIL_PASSWORD");
 
+
+        
         String newsContent = getNews(apiKey);
+        LocalDate date = LocalDate.now();
 
-        ArrayList<String> mailingList = new ArrayList<>();
-        mailingList.add("munsif.shameem@gmail.com");
-        mailingList.add("nifemiawotorebo@gmail.com");
+        HashSet<String> mailingList = new HashSet<String>();
+        //mailingList.add("munsif.shameem@gmail.com");
+        mailingList.add("footyworldinsta@gmail.com");
+    
 
-        sendEmail(mailingList, senderEmail, senderPassword, newsContent);
+        sendEmail(mailingList, senderEmail, senderPassword, newsContent, date);
     }
 
     private static String getNews(String key) {
@@ -57,7 +63,7 @@ public class Application {
             jsonReader.close();
 
             JsonArray articles = jsonObject.getJsonArray("articles");
-            // get 5 articles related to business
+            // get  articles related to business
             for (int i = 0; i < 4; i++) {
                 JsonObject article = articles.getJsonObject(i);
                 String title = article.getString("title");
@@ -82,13 +88,14 @@ public class Application {
      * @param senderPassword - the password for the senders email
      * @param newsContent - the news content to email
      */
-    public static void sendEmail(ArrayList<String> mailingList, String senderEmail, String senderPassword, String newsContent) {
+    public static void sendEmail(HashSet<String> mailingList, String senderEmail, String senderPassword, String newsContent, LocalDate date) {
         // SMTP Configuration for Gmail
         Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+       props.put("mail.smtp.auth", "true");
+props.put("mail.smtp.ssl.enable", "true");  
+props.put("mail.smtp.host", "smtp.gmail.com");
+props.put("mail.smtp.port", "465"); 
+props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
         // Authenticate sender
         Session session = Session.getInstance(props, new Authenticator() {
@@ -102,8 +109,14 @@ public class Application {
                 Message message = new MimeMessage(session);
                 message.setFrom(new InternetAddress(senderEmail));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
-                message.setSubject("Daily Business News");
-                message.setText(newsContent);
+               message.setSubject("Daily Business News");
+                message.setContent(
+              "<h1>Invest Soc Daily NewsRound on " + date +  "</h1>" + "<p> " + newsContent + "</p>",  "text/html");
+              message.saveChanges();
+              
+              
+           //  message.saveChanges();
+              //  message.setText(newsContent);
 
                 // Send email
                 Transport.send(message);
