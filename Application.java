@@ -35,7 +35,8 @@ public class Application {
         LocalDate date = LocalDate.now();
 
         HashSet<String> mailingList = new HashSet<String>();
-        //mailingList.add("munsif.shameem@gmail.com");
+        
+        //dummy email
         mailingList.add("footyworldinsta@gmail.com");
     
 
@@ -69,8 +70,9 @@ public class Application {
                 String title = article.getString("title");
                 String newsUrl = article.getString("url");
 
-                newsContent.append("Title: ").append(title).append("\n");
-                newsContent.append("URL: ").append(newsUrl).append("\n\n");
+                newsContent.append("<h3>").append(title).append("</h3>");
+                newsContent.append("<p><a href='").append(newsUrl).append("'>Read more</a></p>");
+
             }
 
         } catch (Exception e) {
@@ -83,7 +85,7 @@ public class Application {
     /**
      * Method responsible for sending the news to all members of the mailing list
      * 
-     * @param mailingList - the mailing list (stored as an arraylist)
+     * @param mailingList - the mailing list (stored as a set)
      * @param senderEmail - the senders email
      * @param senderPassword - the password for the senders email
      * @param newsContent - the news content to email
@@ -111,7 +113,7 @@ props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
                message.setSubject("Daily Business News");
                 message.setContent(
-              "<h1>Invest Soc Daily NewsRound on " + date +  "</h1>" + "<p> " + newsContent + "</p>",  "text/html");
+              "<h1>Finance and Business news on " + date +  "</h1>" + newsContent.toString() ,  "text/html");
               message.saveChanges();
               
               
@@ -123,7 +125,7 @@ props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
                 System.out.println("Email sent to: " + recipient);
             }
         } catch (MessagingException e) {
-            e.printStackTrace();
+           System.out.println("Invalid email address " + e.getMessage());
         }
     }
 }
