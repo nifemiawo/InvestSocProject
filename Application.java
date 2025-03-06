@@ -25,6 +25,8 @@ import jakarta.mail.internet.MimeMessage;
 import java.time.LocalDate;
 public class Application {
     public static void main(String[] args) {
+
+        
         String apiKey = System.getenv("NEWSAPIKEY");
         String senderEmail = System.getenv("EMAIL");
         String senderPassword = System.getenv("EMAIL_PASSWORD");
@@ -32,8 +34,10 @@ public class Application {
 
         
         String newsContent = getNews(apiKey);
+        // getting current date
         LocalDate date = LocalDate.now();
 
+        // set to store mailing list with
         HashSet<String> mailingList = new HashSet<String>();
         
         //dummy email
@@ -43,11 +47,18 @@ public class Application {
         sendEmail(mailingList, senderEmail, senderPassword, newsContent, date);
     }
 
+    /**
+     * Method responsible for getting news from API
+     * @param key - API key
+     * @return the news
+     */
     private static String getNews(String key) {
 
+        
         String url = "https://newsapi.org/v2/top-headlines?category=business&apiKey=" + key;
         StringBuilder newsContent = new StringBuilder();
 
+        // build a request
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("Content-Type", "application/json")
@@ -65,11 +76,12 @@ public class Application {
 
             JsonArray articles = jsonObject.getJsonArray("articles");
             // get  articles related to business
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i <= 4; i++) {
                 JsonObject article = articles.getJsonObject(i);
                 String title = article.getString("title");
                 String newsUrl = article.getString("url");
 
+                // make title heading h3 size and urls all say "read more"
                 newsContent.append("<h3>").append(title).append("</h3>");
                 newsContent.append("<p><a href='").append(newsUrl).append("'>Read more</a></p>");
 
@@ -125,7 +137,7 @@ props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
                 System.out.println("Email sent to: " + recipient);
             }
         } catch (MessagingException e) {
-           System.out.println("Invalid email address " + e.getMessage());
+           System.out.println("Invalid email address " );
         }
     }
 }
