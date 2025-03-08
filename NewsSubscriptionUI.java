@@ -132,7 +132,8 @@ public class NewsSubscriptionUI extends JFrame {
         Path file = Paths.get("data/preferences.csv");
         try (PrintWriter printWriter =
         new PrintWriter(Files.newBufferedWriter(file, StandardCharsets.UTF_8,StandardOpenOption.CREATE, StandardOpenOption.APPEND))) {
-            printWriter.write(email + "," + category.toString());
+            printWriter.write(email + "," + category.toString() + "\n");
+        
         
        } catch (Exception e) {
         
