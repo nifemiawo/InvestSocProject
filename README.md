@@ -10,7 +10,8 @@ javac -cp ".:lib/*" Application.java
 java -cp ".:lib/*" Application
 
 
-WINDOWS 
+WINDOWS on
+
+
 javac -cp ".;lib/*" Application.java
 java -cp ".;lib/*" Application
-
