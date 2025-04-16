@@ -111,8 +111,8 @@ public class Application {
 
             prefs.forEach(pref -> {
                 if (pref.equals("business")) {
-                    userContent.append("<h2>Business News</h2>").append(businessNews);
-                    sectorsJoiner.add("Business");
+                    userContent.append("<h2>Finance News</h2>").append(businessNews);
+                    sectorsJoiner.add("Finance");
                 } else if (pref.equals("tech")) {
                     userContent.append("<h2>Tech News</h2>").append(techNews);
                     sectorsJoiner.add("Tech");
